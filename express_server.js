@@ -8,10 +8,12 @@ function generateRandomString() {
   let digits = "0123456789";
   let alphanum = upper + lower + digits;
 
-  console.log(alphanum[Math.floor(Math.random() * alphanum.length)]);
+  let generatedString = "";
+  for (let i = 0; i < 6; ++i) {
+    generatedString += alphanum[Math.floor(Math.random() * alphanum.length)];
+  }
+  return generatedString;
 }
-
-generateRandomString();
 
 
 app.set("view engine", "ejs");
@@ -39,9 +41,12 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send("ok");
+  var randomString = generateRandomString();
+  urlDatabase[randomString] = req.body.longURL;
+  res.redirect("http://localhost:8080/urls/" + randomString);
 })
+
+
 
 
 
