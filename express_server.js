@@ -2,6 +2,18 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 
+function generateRandomString() {
+  let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let lower = upper.toLowerCase();
+  let digits = "0123456789";
+  let alphanum = upper + lower + digits;
+
+  console.log(alphanum[Math.floor(Math.random() * alphanum.length)]);
+}
+
+generateRandomString();
+
+
 app.set("view engine", "ejs");
 
 const bodyParser = require("body-parser");
@@ -30,8 +42,6 @@ app.post("/urls", (req, res) => {
   console.log(req.body);
   res.send("ok");
 })
-
-
 
 
 
