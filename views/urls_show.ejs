@@ -5,8 +5,9 @@
 </head>
 
 <header>
-    <% include partials/_header.ejs %>
+    <%- include('partials/_header.ejs') %>
 </header>
+
 
 <body>
   <table>
@@ -14,11 +15,9 @@
         <td>URL</td>
         <td>shortened</td>
       <tr>
-      <% for (shortened in urls) { %>
-        <td><%= urls[shortened]%></td>
-        <td><%= shortened %> </td>
+        <td><%= longURL %></td>
+        <td><%= shortURL %></td>
       </tr>
-      <% }; %>
   </table>
 </body>
 </html>
