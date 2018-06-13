@@ -66,7 +66,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id],
-  username: req.cookies["username"]};
+    username: req.cookies["username"]};
   res.render("urls_show", templateVars);
 });
 
@@ -83,7 +83,10 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 });
 
-
+app.post("/logout", (req, res) => {
+  res.clearCookie('username');
+  res.redirect("/urls");
+})
 
 
 
