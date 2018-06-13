@@ -18,6 +18,9 @@
         <% for (shortened in urls) { %>
         <td><%= urls[shortened]%> &rarr; <%= shortened %> </td>
         <td>
+          <a href="/urls/<%= shortened %>">Edit</a>
+         </td>
+        <td>
           <!-- <p>urls/<%= shortened %>/delete</p> -->
           <form method="POST" action="/urls/<%= shortened %>/delete">
             <input type="submit" value="DELETE">
