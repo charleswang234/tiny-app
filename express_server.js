@@ -64,9 +64,9 @@ app.get("/urls/:id", (req, res) => {
 
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.longURL;
-    let templateVars = { urls: urlDatabase};
-  res.render("urls_index", templateVars);
-  //res.redirect("/urls");
+  //   let templateVars = { urls: urlDatabase};
+  // res.render("urls_index", templateVars);
+  res.redirect("/urls");
 });
 
 
