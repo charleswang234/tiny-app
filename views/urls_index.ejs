@@ -4,25 +4,25 @@
   <title>TinyApp</title>
 </head>
 
-<header>
-    <% include partials/_header.ejs %>
-</header>
+
 
 <body>
+    <%- include partials/_header.ejs %>
+
   <table>
       <!-- <tr>
         <td>URL</td>
         <td>shortened</td>
       </tr> -->
       <tr>
-      <% for (shortened in urls) { %>
-      <td><%= urls[shortened]%> &rarr; <%= shortened %> </td>
-      <td>
-        <!-- <p>urls/<%= shortened %>/delete</p> -->
-        <form method="POST" action="/urls/<%= shortened %>/delete">
-        <input type="submit" value="DELETE">
-        </form>
-      </td>
+        <% for (shortened in urls) { %>
+        <td><%= urls[shortened]%> &rarr; <%= shortened %> </td>
+        <td>
+          <!-- <p>urls/<%= shortened %>/delete</p> -->
+          <form method="POST" action="/urls/<%= shortened %>/delete">
+            <input type="submit" value="DELETE">
+          </form>
+        </td>
       </tr>
       <% }; %>
   </table>
