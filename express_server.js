@@ -35,6 +35,12 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+app.post("/urls", (req, res) => {
+  var randomString = generateRandomString();
+  urlDatabase[randomString] = req.body.longURL; //uses bodyparser
+  res.redirect("http://localhost:8080/urls/" + randomString);
+});
+
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
@@ -56,11 +62,14 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls", (req, res) => {
-  var randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL; //uses bodyparser
-  res.redirect("http://localhost:8080/urls/" + randomString);
+app.post("/urls/:id", (req, res) => {
+  urlDatabase[req.params.id] = req.body.longURL;
+    let templateVars = { urls: urlDatabase};
+  res.render("urls_index", templateVars);
+  //res.redirect("/urls");
 });
+
+
 
 
 

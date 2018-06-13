@@ -9,15 +9,13 @@
 
 
 <body>
-    <%- include('partials/_header.ejs') %>
-  <table>
-    <tr>
-      <td>URL</td>
-      <td>shortened</td>
-      <tr>
-        <td><%= longURL %></td>
-        <td><%= shortURL %></td>
-      </tr>
-    </table>
-  </body>
+  <%- include('partials/_header.ejs') %>
+
+  <h1>shortURL: <%= shortURL%></h1>
+  <form action="/urls/<%= shortURL%>" method="POST"> <!-- style="margin:150px; -->
+    <input type="text" placeholder="<%= longURL %>" name="longURL" style="width: 300px">
+    <input type="submit" value ="Update">
+  </form>
+
+</body>
 </html>
