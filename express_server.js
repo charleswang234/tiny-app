@@ -1,6 +1,8 @@
 var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 function generateRandomString() {
   let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -69,7 +71,10 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("/urls");
 });
 
-
+app.post("/login", (req, res) => {
+  res.cookie("username",req.body.username);
+  res.redirect("/urls");
+});
 
 
 
