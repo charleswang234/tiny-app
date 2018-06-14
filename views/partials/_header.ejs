@@ -4,25 +4,12 @@
   <header>
     <div class="jumbotron" style="text-align:center;">
       <h1 >TinyApp</h1>
-      <% if (username){%>
+      <% if (user){%>
 
       <form action="/logout" method="POST">
-        <label><%= username %></label>
+        <label><%= user.id %></label>
         <input type="submit" value="logout" class="btn btn-default">
       </form>
-
-      <!-- <div class="row">
-        <div class="col-sm-5"></div>
-        <div class="col-sm-4 col-sm-offset-4">
-          <form action="/logout" method="POST">
-            <div class="input-group">
-              <label><%= username %></label>
-              <input type="submit" value="logout" class="btn btn-default">
-            </div>
-          </form>
-        </div>
-      </div> -->
-
 
       <% } else { %>
 
