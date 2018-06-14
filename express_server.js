@@ -4,6 +4,16 @@ var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+
+// **********************************************************************
+
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.set("view engine", "ejs");
+
+
 // ***********************************************************************
 
 function generateRandomString() {
@@ -19,13 +29,16 @@ function generateRandomString() {
   return generatedString;
 }
 
-// **********************************************************************
 
-
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.set("view engine", "ejs");
+function urlsForUser(id) {
+  let filteredUrlDatabase = {};
+  for (shortUrl in urlDatabase) {
+    if (urlDatabase[shortUrl].userID === id) {
+      filteredUrlDatabase[shortUrl] = urlDatabase[shortUrl];
+    }
+  }
+  return filteredUrlDatabase;
+}
 
 
 // **********************************************************************
@@ -63,8 +76,9 @@ const users = {
 // **********************************************************************
 
 app.get("/urls", (req, res) => {
+
   let templateVars = {
-    urls: urlDatabase,
+    urls: urlsForUser(req.cookies["user_id"]),
     user: users[req.cookies["user_id"]]};
     res.render("urls_index", templateVars);
   });
@@ -89,7 +103,7 @@ app.get("/urls/new", (req, res) => {
 
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL].longURL;
+  let longURL = urlDatabase[req.params.shortURL].longLink;
   res.redirect(longURL);
 });
 
@@ -104,14 +118,15 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  if (urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
-    res.redirect("/urls");
-    return;
-  }
+  if (req.cookies["user_id"] === undefined || urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+  let templateVars = {user: users[req.cookies["user_id"]]};
+  res.render("noAccess", templateVars);
+} else {
   let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id].longLink,
     user: users[req.cookies["user_id"]]};
     res.render("urls_show", templateVars);
-  });
+  }
+});
 
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id].longLink = req.body.longURL;

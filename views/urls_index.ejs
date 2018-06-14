@@ -6,6 +6,9 @@
 <body>
   <div class="container-fluid">
     <%- include partials/_header.ejs %>
+    <%if (user === undefined) {%>
+      <p>Please login or register to add, edit, and delete URLS</p>
+    <%} else {%>
 
     <table class="table">
       <% for (shortened in urls) { %>
@@ -28,6 +31,7 @@
     </table>
 
     <a href="/urls/new" class="btn btn-primary">New URL</a>
+    <% } %>
   </div>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include partials/_head.ejs%>
+
+<body>
+  <div class="container-fluid" style="text-align:center;">
+    <%- include partials/_header.ejs %>
+    <% if (user === undefined) { %>
+    <p>Please login to continue</p>
+    <% } else {%>
+    <p>You do not have access to this page</p>
+    <% } %>
+    <a href="/urls" class="btn btn-primary">Back to main page</a>
+
+  </div>
+</body>
+</html>
