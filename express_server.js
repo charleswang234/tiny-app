@@ -104,17 +104,42 @@ app.post("/urls/:id", (req, res) => {
 app.get("/login", (req, res) => {
   let templateVars = {
     user: users[req.cookies["user_id"]]};
-  res.render("login", templateVars);
-});
+    res.render("login", templateVars);
+  });
 
-app.post("/login", (req, res) => {                /// need to modify
-  res.cookie("username",req.body.username);
-  //console.log(req.cookies);
+
+app.post("/login", (req, res) => {
+  let emailBool = false;
+  let tuser;
+  for (var userID in users) {
+    if (users[userID].email === req.body.email) {
+      emailBool = true;
+      tuser = users[userID];
+      break;
+    }
+  }
+  if (!emailBool) {
+    res.status(403);
+    res.send("error problem: 403");
+    return
+  }
+
+  if (tuser.password !==  req.body.password) {
+   res.status(403);
+   res.send("error problem: 403");
+   return
+ }
+
+ res.cookie("user_id", tuser.id);
+
   res.redirect("/urls");
 });
 
+
+
+
 app.post("/logout", (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect("/urls");
 });
 
