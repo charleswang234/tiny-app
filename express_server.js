@@ -33,11 +33,11 @@ app.set("view engine", "ejs");
 var urlDatabase = {
   "b2xVn2": {
     longLink: "http://www.lighthouselabs.ca",
-    userID: ""
+    userID: "admin"
   },
   "9sm5xK": {
     longLink:"http://www.google.com",
-    userID: ""
+    userID: "admin"
   }
 };
 
@@ -78,10 +78,10 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  // if (!req.cookies["user_id"]){
-  //   res.redirect("/urls");
-  //   return;
-  // }
+  if (!req.cookies["user_id"]){
+    res.redirect("/urls");
+    return;
+  }
   let templateVars = {
     user: users[req.cookies["user_id"]]};
     res.render("urls_new", templateVars);
@@ -94,14 +94,22 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 
-app.post("/urls/:id/delete", (req, res) => {   // don't know if correct
+app.post("/urls/:id/delete", (req, res) => {
+  if (urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+    res.redirect("/urls");
+    return;
+  }
   delete urlDatabase[req.params.id];
   res.redirect("/urls");
 });
 
 app.get("/urls/:id", (req, res) => {
+  if (urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+    res.redirect("/urls");
+    return;
+  }
   let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id].longLink,
-    user: users[req.cookies["user_id"]]};    // don't know if correct
+    user: users[req.cookies["user_id"]]};
     res.render("urls_show", templateVars);
   });
 
