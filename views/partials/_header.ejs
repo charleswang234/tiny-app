@@ -3,17 +3,17 @@
 <header>
   <div class="jumbotron" style="text-align:center;">
     <h1 >TinyApp</h1>
-    <% if (!user){%>
+    <% if (user === undefined){%>
     <a href="/login" class="btn btn-primary">login</a>
     <a href="/register" class="btn btn-primary">register</a>
     <% } else {%>
-    <p><%= user.id %>
       <form action="/logout" method="POST">
+        <label> <%= user.id %> </label>
       <input type="submit" value="logout" class="btn btn-default">
+      <!-- <a href="/register" class="btn btn-primary">register</a> -->
     </form>
-      <a href="/register" class="btn btn-primary">register</a>
-    </p>
-    <% }%>
+
+    <% } %>
   </div>
 
 

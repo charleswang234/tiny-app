@@ -47,7 +47,7 @@ const users = {
     password: "dishwasher-funk"
   },
 
-  "john": {
+  "johnsmith": {
     id: "johnsmith",
     email: "john@example.com",
     password: "smithjohn"
@@ -70,6 +70,10 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  // if (!req.cookies["user_id"]){
+  //   res.redirect("/urls");
+  //   return;
+  // }
   let templateVars = {
     user: users[req.cookies["user_id"]]};
     res.render("urls_new", templateVars);
@@ -121,18 +125,17 @@ app.post("/login", (req, res) => {
   if (!emailBool) {
     res.status(403);
     res.send("error problem: 403");
-    return
+    return;
   }
 
   if (tuser.password !==  req.body.password) {
    res.status(403);
    res.send("error problem: 403");
-   return
+   return;
  }
 
  res.cookie("user_id", tuser.id);
-
-  res.redirect("/urls");
+ res.redirect("/urls");
 });
 
 
