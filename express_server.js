@@ -2,8 +2,10 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
+
 app.use(cookieParser());
 
+const bcrypt = require('bcrypt');
 
 // **********************************************************************
 
@@ -55,28 +57,28 @@ var urlDatabase = {
 };
 
 const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
-  "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  },
+  // "userRandomID": {
+  //   id: "userRandomID",
+  //   email: "user@example.com",
+  //   password: "purple-monkey-dinosaur"
+  // },
+  // "user2RandomIDendp": {
+  //   id: "user2RandomID",
+  //   email: "user2@example.com",
+  //   password: "dishwasher-funk"
+  // },
 
-  "johnsmith": {
-    id: "johnsmith",
-    email: "john@example.com",
-    password: "smithjohn"
-  }
+  // "johnsmith": {
+  //   id: "johnsmith",
+  //   email: "john@example.com",
+  //   password: "smithjohn"
+  // }
 }
 
 // **********************************************************************
 
 app.get("/urls", (req, res) => {
-
+  console.log(users);
   let templateVars = {
     urls: urlsForUser(req.cookies["user_id"]),
     user: users[req.cookies["user_id"]]};
@@ -156,7 +158,7 @@ app.post("/login", (req, res) => {
     return;
   }
 
-  if (tuser.password !==  req.body.password) {
+  if (!bcrypt.compareSync(req.body.password, tuser.password)) {
    res.status(403);
    res.send("error problem: 403");
    return;
@@ -182,17 +184,20 @@ app.post("/register", (req, res) => {
     res.status(400);
     res.send("error problem");
   }
+
   for (userIDs in users) {
     if (users[userIDs].email === req.body.email) {
       res.status(400);
       res.send("error problem");
     }
   }
+  console.log(bcrypt.hashSync(req.body.password, 10));
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
   let randomID = generateRandomString();
   users[randomID] = {
     id: randomID,
     email: req.body.email,
-    password: req.body.password
+    password: hashedPassword
   };
   res.cookie("user_id",users[randomID].id);
   res.redirect("/urls");
