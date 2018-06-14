@@ -4,6 +4,8 @@ var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+// ***********************************************************************
+
 function generateRandomString() {
   let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let lower = upper.toLowerCase();
@@ -17,6 +19,9 @@ function generateRandomString() {
   return generatedString;
 }
 
+// **********************************************************************
+
+
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -29,6 +34,25 @@ var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+
+  "john": {
+    id: "johnsmith",
+    email: "john@example.com",
+    password: "smithjohn"
+  }
+}
 
 // **********************************************************************
 
@@ -100,6 +124,9 @@ app.post("/register", (req, res) => {
 
 
 
+
+
+// ************************************************************
 
 app.get("/", (req, res) => {
   res.end("Hello!");
