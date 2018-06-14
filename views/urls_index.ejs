@@ -8,23 +8,36 @@
     <%- include partials/_header.ejs %>
 
     <table class="table">
+      <% for (shortened in urls) { %>
 
-     <% for (shortened in urls) { %>
-     <tr>
-       <td class="well"><%= urls[shortened]%> &rarr; <%= shortened %> </td>
-       <td>
-        <a href="/urls/<%= shortened %>">Edit</a>
-      </td>
-      <td>
-        <!-- <p>urls/<%= shortened %>/delete</p> -->
-        <form method="POST" action="/urls/<%= shortened %>/delete">
-          <input type="submit" value="DELETE">
-        </form>
-      </td>
-    </tr>
-    <% }; %>
-  </table>
-  <a href="/urls/new">New URL</a>
-</div>
+      <tr class="well">
+
+        <td><%= urls[shortened]%> &rarr; <%= shortened %> </td>
+        <td>
+          <a href="/urls/<%= shortened %>" class="btn btn-info">Edit</a>
+        </td>
+        <td>
+          <!-- <p>urls/<%= shortened %>/delete</p> -->
+          <form method="POST" action="/urls/<%= shortened %>/delete">
+            <input type="submit" value="DELETE" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+
+      <% }; %>
+    </table>
+
+    <a href="/urls/new" class="btn btn-primary">New URL</a>
+  </div>
 </body>
 </html>
+
+
+<!-- https://www.w3schools.com/bootstrap/bootstrap_typography.asp
+https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_txt_colors&stacked=h
+https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_grid_ex3&stacked=h
+https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_grid_ex1&stacked=h
+https://www.w3schools.com/bootstrap/bootstrap_media_objects.asp
+https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_form_input_group&stacked=h
+https://www.w3schools.com/bootstrap/bootstrap_buttons.asp
+https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_button_elements&stacked=h -->

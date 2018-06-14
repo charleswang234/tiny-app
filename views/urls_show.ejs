@@ -6,13 +6,13 @@
 
 
 <body>
-  <div class="container">
+  <div class="container-fluid" style="text-align:center;">
     <%- include('partials/_header.ejs') %>
 
-    <h1>shortURL: <%= shortURL%></h1>
+    <h1><small>shortURL: <%= shortURL%></small></h1>
     <form action="/urls/<%= shortURL%>" method="POST"> <!-- style="margin:150px; -->
       <input type="text" placeholder="<%= longURL %>" name="longURL" style="width: 300px">
-      <input type="submit" value ="Update">
+      <input type="submit" value ="Update" class="btn btn-primary">
     </form>
   </div>
 </body>
