@@ -1,11 +1,13 @@
 
 
-<body>
-  <header>
-    <div class="jumbotron" style="text-align:center;">
-      <h1 >TinyApp</h1>
+<header>
+  <div class="jumbotron" style="text-align:center;">
+    <h1 >TinyApp</h1>
+    <% if (!user){%>
+    <a href="/login" class="btn btn-primary">login</a>
+    <% } %>
+    <a href="/register" class="btn btn-primary">register</a>
+  </div>
 
 
-    </div>
-  </header>
-</body>
+</header>
