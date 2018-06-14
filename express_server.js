@@ -31,8 +31,14 @@ app.set("view engine", "ejs");
 // **********************************************************************
 
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    longLink: "http://www.lighthouselabs.ca",
+    userID: ""
+  },
+  "9sm5xK": {
+    longLink:"http://www.google.com",
+    userID: ""
+  }
 };
 
 const users = {
@@ -65,7 +71,9 @@ app.get("/urls", (req, res) => {
 
 app.post("/urls", (req, res) => {
   var randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL; //uses bodyparser
+  urlDatabase[randomString] = {
+    longLink: req.body.longURL,
+  userID: req.cookies["user_id"]}; //uses bodyparser
   res.redirect("http://localhost:8080/urls/" + randomString);
 });
 
@@ -81,27 +89,24 @@ app.get("/urls/new", (req, res) => {
 
 
 app.get("/u/:shortURL", (req, res) => {
- let longURL = urlDatabase[req.params.shortURL];
- res.redirect(longURL);
+  let longURL = urlDatabase[req.params.shortURL].longURL;
+  res.redirect(longURL);
 });
 
 
-app.post("/urls/:id/delete", (req, res) => {
+app.post("/urls/:id/delete", (req, res) => {   // don't know if correct
   delete urlDatabase[req.params.id];
-  let templateVars = { urls: urlDatabase};
   res.redirect("/urls");
 });
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id],
-    user: users[req.cookies["user_id"]]};
+  let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id].longLink,
+    user: users[req.cookies["user_id"]]};    // don't know if correct
     res.render("urls_show", templateVars);
   });
 
 app.post("/urls/:id", (req, res) => {
-  urlDatabase[req.params.id] = req.body.longURL;
-  //   let templateVars = { urls: urlDatabase};
-  // res.render("urls_index", templateVars);
+  urlDatabase[req.params.id].longLink = req.body.longURL;
   res.redirect("/urls");
 });
 
@@ -139,18 +144,15 @@ app.post("/login", (req, res) => {
 });
 
 
-
-
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id');
   res.redirect("/urls");
 });
 
 app.get("/register", (req, res) => {
-  let templateVars = {
-    user: users[req.cookies["user_id"]]};
-    res.render("register", templateVars);
-  });
+  let templateVars = {user: users[req.cookies["user_id"]]};
+  res.render("register", templateVars);
+});
 
 app.post("/register", (req, res) => {
   if (req.body.email === "" || req.body.password === "") {
