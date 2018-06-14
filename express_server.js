@@ -86,8 +86,17 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie('username');
   res.redirect("/urls");
-})
+});
 
+app.get("/register", (req, res) => {
+  let templateVars = {
+    username: req.cookies["username"]};
+  res.render("register", templateVars);
+});
+
+app.post("/register", (req, res) => {
+
+});
 
 
 
