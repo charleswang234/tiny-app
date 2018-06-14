@@ -119,13 +119,22 @@ app.get("/register", (req, res) => {
   });
 
 app.post("/register", (req, res) => {
+  if (req.body.email === "" || req.body.password === "") {
+    res.status(400);
+    res.send("error problem");
+  }
+  for (userIDs in users) {
+    if (users[userIDs].email === req.body.email) {
+      res.status(400);
+      res.send("error problem");
+    }
+  }
   let randomID = generateRandomString();
   users[randomID] = {
     id: randomID,
     email: req.body.email,
     password: req.body.password
   };
-  console.log(users);
   res.cookie("user_id",users[randomID].id);
   res.redirect("/urls");
 });
