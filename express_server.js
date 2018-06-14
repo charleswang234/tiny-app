@@ -101,6 +101,12 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/login", (req, res) => {
+  let templateVars = {
+    user: users[req.cookies["user_id"]]};
+  res.render("login", templateVars);
+});
+
 app.post("/login", (req, res) => {                /// need to modify
   res.cookie("username",req.body.username);
   //console.log(req.cookies);
