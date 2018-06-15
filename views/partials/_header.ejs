@@ -8,11 +8,9 @@
     <a href="/register" class="btn btn-primary">register</a>
     <% } else {%>
       <form action="/logout" method="POST">
-        <label> <%= user.id %> </label>
+        <label> <%= user.email %> </label>
       <input type="submit" value="logout" class="btn btn-default">
-      <!-- <a href="/register" class="btn btn-primary">register</a> -->
     </form>
-
     <% } %>
   </div>
 

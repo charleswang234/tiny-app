@@ -69,7 +69,6 @@ const users = {};
 // **********************************************************************
 
 app.get("/urls", (req, res) => {
-  console.log(users);
   let templateVars = {
     urls: urlsForUser(req.session["user_id"]),
     user: users[req.session["user_id"]]};
@@ -193,15 +192,19 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-
+app.get("/", (req, res) => {
+  if(req.session["user_id"] === undefined) {
+    res.redirect("/login");
+  } else {
+    res.redirect("/urls");
+  }
+});
 
 
 
 // ************************************************************
 
-app.get("/", (req, res) => {
-  res.end("Hello!");
-});
+
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
