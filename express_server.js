@@ -162,30 +162,39 @@ app.get("/login", (req, res) => {
 
 
 app.post("/login", (req, res) => {
-  let emailBool = false;
-  let tuser;
   for (var userID in users) {
-    if (users[userID].email === req.body.email) {
-      emailBool = true;
-      tuser = users[userID];
-      break;
-    }
-  }
-  if (!emailBool) {
-    res.status(403);
-    res.send("error problem: 403");
-    return;
-  }
-
-  if (!bcrypt.compareSync(req.body.password, tuser.password)) {
-   res.status(403);
-   res.send("error problem: 403");
+    if (users[userID].email === req.body.email
+      && bcrypt.compareSync(req.body.password, users[userID].password)) {
+     req.session["user_id"] = users[userID].id;
+   res.redirect("/urls");
    return;
  }
+}
 
- req.session["user_id"] = tuser.id;
- res.redirect("/urls");
+res.status(403);
+res.send("error problem: 403");
 });
+
+
+
+//  let emailBool = false;
+//  let tuser;
+//  for (var userID in users) {
+//   if (users[userID].email === req.body.email) {
+//     emailBool = true;
+//     tuser = users[userID];
+//     break;
+//   }
+// }
+// if (!emailBool || !bcrypt.compareSync(req.body.password, tuser.password)) {
+//   res.status(403);
+//   res.send("error problem: 403");
+//   return;
+// }
+
+// req.session["user_id"] = tuser.id;
+// res.redirect("/urls");
+// });
 
 
 app.post("/logout", (req, res) => {
