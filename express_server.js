@@ -86,12 +86,12 @@ app.post("/urls", (req, res) => {
     var randomString = generateRandomString();
     urlDatabase[randomString] = {
       longLink: req.body.longURL,
-  userID: req.session["user_id"]}; //uses bodyparser
+  userID: req.session["user_id"]};
   res.redirect("/urls/" + randomString);
-} else {
+  } else {
   let templateVars = {user: users[req.session["user_id"]]};
   res.render("noAccess", templateVars);
-}
+  }
 });
 
 app.get("/urls/new", (req, res) => {
@@ -115,7 +115,6 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-
 app.post("/urls/:id/delete", (req, res) => {
   if (noCurrentUser(req) || userNotEqual(req)) {
     let templateVars = {user: users[req.session["user_id"]]};
@@ -137,8 +136,8 @@ app.get("/urls/:id", (req, res) => {
     let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id].longLink,
       user: users[req.session["user_id"]]};
       res.render("urls_show", templateVars);
-    }
-  });
+  }
+});
 
 app.post("/urls/:id", (req, res) => {
   if (noCurrentUser(req) || userNotEqual(req)) {
@@ -157,8 +156,8 @@ app.get("/login", (req, res) => {
   }
   let templateVars = {
     user: users[req.session["user_id"]]};
-    res.render("login", templateVars);
-  });
+  res.render("login", templateVars);
+});
 
 
 app.post("/login", (req, res) => {
@@ -168,10 +167,10 @@ app.post("/login", (req, res) => {
      req.session["user_id"] = users[userID].id;
    res.redirect("/urls");
    return;
- }
-}
-res.status(403);
-res.send("error problem: 403");
+    }
+  }
+  res.status(403);
+  res.send("error problem: 403");
 });
 
 app.post("/logout", (req, res) => {
@@ -216,19 +215,4 @@ app.post("/register", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
-
-// ************************************************************
-
-
-
-// app.get("/urls.json", (req, res) => {
-//   res.json(urlDatabase);
-// });
-
-
-// app.get("/hello", (req, res) => {
-//   res.end("<html><body>Hello <b>World</b></body></html>\n");
-// });
 
