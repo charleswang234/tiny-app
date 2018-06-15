@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include partials/_head.ejs%>
 
+<%- include partials/_head.ejs%>
 <body>
   <div class="container-fluid">
     <%- include partials/_header.ejs %>
@@ -13,32 +13,5 @@
     </form>
   </div>
 </body>
+
 </html>
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<%- include partials/_head.ejs%>
-
-<body>
-  <div class="container-fluid">
-    <%- include partials/_header.ejs %>
-    <% if (user){%>
-
-    <form action="/logout" method="POST">
-      <label><%= user.id %></label>
-      <input type="submit" value="logout" class="btn btn-default">
-    </form>
-
-    <% } else { %>
-    <form action="/login" method="POST" style="text-align:center;">
-      <input type="email" name="email" placeholder="email">
-      <input type="password" name="password" placeholder="password">
-      <input type="submit" value="enter" class="btn btn-primary">
-    </form>
-    <% } %>
-  </div>
-</body>
-</html> -->

@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <%- include partials/_head.ejs%>
-
-
-
 <body>
   <div class="container-fluid" style="text-align:center;">
     <%- include('partials/_header.ejs') %>
-
     <h1><small>shortURL: <%= shortURL%></small></h1>
     <form action="/urls/<%= shortURL%>" method="POST"> <!-- style="margin:150px; -->
       <input type="text" placeholder="<%= longURL %>" name="longURL" style="width: 300px">
@@ -16,4 +12,5 @@
     </form>
   </div>
 </body>
+
 </html>

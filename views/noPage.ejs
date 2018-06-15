@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<%- include partials/_head.ejs%>
 
+<%- include partials/_head.ejs%>
 <body>
   <div class="container-fluid" style="text-align:center;">
     <%- include partials/_header.ejs %>
-    <p>You do not have access to this page</p>
-    <% if (user === undefined) { %>
-    <p>Please login to continue</p>
-    <% } %>
+    <p>This page does not exist</p>
     <a href="/urls" class="btn btn-primary">Back to main page</a>
   </div>
 </body>
