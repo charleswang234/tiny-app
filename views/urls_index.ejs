@@ -7,7 +7,7 @@
   <div class="container-fluid">
     <%- include partials/_header.ejs %>
     <%if (user === undefined) {%>
-      <p>Please login or register to add, edit, and delete URLS</p>
+    <p>Please login or register to add, edit, and delete URLS</p>
     <%} else {%>
 
     <table class="table">
@@ -17,7 +17,9 @@
 
         <td><%= urls[shortened].longLink%> &rarr; <%= shortened %> </td>
         <td>
-          <a href="/urls/<%= shortened %>" class="btn btn-info">Edit</a>
+          <form method="GET" action="/urls/<%= shortened %>">
+            <input type="submit" value="Edit" class="btn btn-info">
+          </form>
         </td>
         <td>
           <!-- <p>urls/<%= shortened %>/delete</p> -->

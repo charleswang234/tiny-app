@@ -68,6 +68,14 @@ const users = {};
 
 // **********************************************************************
 
+app.get("/", (req, res) => {
+  if(req.session["user_id"] === undefined) {
+    res.redirect("/login");
+  } else {
+    res.redirect("/urls");
+  }
+});
+
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlsForUser(req.session["user_id"]),
@@ -113,7 +121,7 @@ app.get("/urls/:id", (req, res) => {
   if (req.session["user_id"] === undefined || urlDatabase[req.params.id].userID !== req.session["user_id"]) {
   let templateVars = {user: users[req.session["user_id"]]};
   res.render("noAccess", templateVars);
-} else {
+  } else {
   let templateVars = {shortURL: req.params.id, longURL: urlDatabase[req.params.id].longLink,
     user: users[req.session["user_id"]]};
     res.render("urls_show", templateVars);
@@ -192,13 +200,7 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-app.get("/", (req, res) => {
-  if(req.session["user_id"] === undefined) {
-    res.redirect("/login");
-  } else {
-    res.redirect("/urls");
-  }
-});
+
 
 
 
