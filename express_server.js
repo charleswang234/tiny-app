@@ -170,32 +170,9 @@ app.post("/login", (req, res) => {
    return;
  }
 }
-
 res.status(403);
 res.send("error problem: 403");
 });
-
-
-
-//  let emailBool = false;
-//  let tuser;
-//  for (var userID in users) {
-//   if (users[userID].email === req.body.email) {
-//     emailBool = true;
-//     tuser = users[userID];
-//     break;
-//   }
-// }
-// if (!emailBool || !bcrypt.compareSync(req.body.password, tuser.password)) {
-//   res.status(403);
-//   res.send("error problem: 403");
-//   return;
-// }
-
-// req.session["user_id"] = tuser.id;
-// res.redirect("/urls");
-// });
-
 
 app.post("/logout", (req, res) => {
   req.session = null;
@@ -214,14 +191,14 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   if (req.body.email === "" || req.body.password === "") {
     res.status(400);
-    res.send("error problem");
+    res.send("Email or password is left empty");
     return;
   }
 
   for (userIDs in users) {
     if (users[userIDs].email === req.body.email) {
       res.status(400);
-      res.send("error problem");
+      res.send("This email has already been registered.");
       return;
     }
   }
