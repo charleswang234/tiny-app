@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
+
+// the cookie session
 app.use(cookieSession({
   name: 'session',
   keys: ['asdf'],
@@ -18,6 +20,8 @@ app.use(cookieSession({
 
 // ***********************************************************************
 
+
+// an alphaneumeric string generator that returns a string of length 6
 function generateRandomString() {
   let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let lower = upper.toLowerCase();
@@ -31,6 +35,7 @@ function generateRandomString() {
   return generatedString;
 }
 
+// allows only the urls that belong to id be in the returned urls object
 function urlsForUser(id) {
   let filteredUrlDatabase = {};
   for (shortUrl in urlDatabase) {
@@ -41,31 +46,28 @@ function urlsForUser(id) {
   return filteredUrlDatabase;
 }
 
+// determines whether or not there is a logged in user
 function noCurrentUser(req) {
   return req.session["user_id"] === undefined;
 }
 
+// determines if the ids are equal
 function userNotEqual(req) {
   return urlDatabase[req.params.id].userID !== req.session["user_id"];
 }
 
 // **********************************************************************
 
-var urlDatabase = {
-  // "b2xVn2": {
-  //   longLink: "http://www.lighthouselabs.ca",
-  //   userID: "admin"
-  // },
-  // "9sm5xK": {
-  //   longLink:"http://www.google.com",
-  //   userID: "admin"
-  // }
-};
+// database for urls
+var urlDatabase = {};
 
+// contains info about the users
 const users = {};
 
 // **********************************************************************
 
+
+// root that renders either the login page or urls page depending on whether or not logged in
 app.get("/", (req, res) => {
   if(noCurrentUser(req)) {
     res.redirect("/login");
@@ -74,6 +76,7 @@ app.get("/", (req, res) => {
   }
 });
 
+// the main urls page
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlsForUser(req.session["user_id"]),
@@ -81,6 +84,8 @@ app.get("/urls", (req, res) => {
     res.render("urls_index", templateVars);
   });
 
+
+// used after creating the new url
 app.post("/urls", (req, res) => {
   if (req.session["user_id"]) {
     var randomString = generateRandomString();
@@ -94,6 +99,7 @@ app.post("/urls", (req, res) => {
   }
 });
 
+// renders the page that allows you to create a new url
 app.get("/urls/new", (req, res) => {
   if (!req.session["user_id"]){
     res.redirect("/urls");
@@ -104,7 +110,7 @@ app.get("/urls/new", (req, res) => {
     }
   });
 
-
+// redirects the short url link to the actual URL
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     let templateVars = {user: users[req.session["user_id"]]};
@@ -115,8 +121,9 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+// deletes the URL
 app.post("/urls/:id/delete", (req, res) => {
-  if (noCurrentUser(req) || userNotEqual(req)) {
+  if (noCurrentUser(req) || userNotEqual(req)) { // not the correct user
     let templateVars = {user: users[req.session["user_id"]]};
     res.render("noAccess", templateVars);
     return;
@@ -125,6 +132,8 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
+
+// renders editing URL page
 app.get("/urls/:id", (req, res) => {
   if (!urlDatabase[req.params.id]) {
     let templateVars = {user: users[req.session["user_id"]]};
@@ -139,6 +148,7 @@ app.get("/urls/:id", (req, res) => {
   }
 });
 
+// submit from the editing url page
 app.post("/urls/:id", (req, res) => {
   if (noCurrentUser(req) || userNotEqual(req)) {
     let templateVars = {user: users[req.session["user_id"]]};
@@ -149,6 +159,8 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("/urls");
 });
 
+
+// renders login page if not logged in
 app.get("/login", (req, res) => {
   if (users[req.session["user_id"]]) {
     res.redirect("/urls");
@@ -160,6 +172,7 @@ app.get("/login", (req, res) => {
 });
 
 
+// when the user attempts to login
 app.post("/login", (req, res) => {
   for (var userID in users) {
     if (users[userID].email === req.body.email
@@ -169,15 +182,19 @@ app.post("/login", (req, res) => {
    return;
     }
   }
-  res.status(403);
+  res.status(403); // invalid login
   res.send("error problem: 403");
 });
 
+
+// when the user clicks the logout button
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("/urls");
 });
 
+
+// renders the registration page
 app.get("/register", (req, res) => {
   if (users[req.session["user_id"]]) {
     res.redirect("/urls");
@@ -187,14 +204,16 @@ app.get("/register", (req, res) => {
   res.render("register", templateVars);
 });
 
+
+// user getting registered
 app.post("/register", (req, res) => {
-  if (req.body.email === "" || req.body.password === "") {
+  if (req.body.email === "" || req.body.password === "") { // when email/password is empty
     res.status(400);
     res.send("Email or password is left empty");
     return;
   }
 
-  for (userIDs in users) {
+  for (userIDs in users) { // email already registered by other user.
     if (users[userIDs].email === req.body.email) {
       res.status(400);
       res.send("This email has already been registered.");
@@ -202,14 +221,14 @@ app.post("/register", (req, res) => {
     }
   }
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-  let randomID = generateRandomString();
-  users[randomID] = {
+  let randomID = generateRandomString(); // creates random identification
+  users[randomID] = { // creates the user
     id: randomID,
     email: req.body.email,
     password: hashedPassword
   };
-  req.session["user_id"] = users[randomID].id;
-  res.redirect("/urls");
+  req.session["user_id"] = users[randomID].id; // sets the cookie of that user
+  res.redirect("/urls"); // renders the urls page
 });
 
 app.listen(PORT, () => {

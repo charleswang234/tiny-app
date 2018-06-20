@@ -1,3 +1,5 @@
+<!-- Page that displays the URLS -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,11 +15,13 @@
       <tr class="well">
         <td><%= urls[shortened].longLink%> &rarr; <%= shortened %> </td>
         <td>
+          <!-- Allows you to exit the long url -->
           <form method="GET" action="/urls/<%= shortened %>">
             <input type="submit" value="Edit" class="btn btn-info">
           </form>
         </td>
         <td>
+          <!-- Allows you to delete the URL -->
           <form method="POST" action="/urls/<%= shortened %>/delete">
             <input type="submit" value="DELETE" class="btn btn-danger">
           </form>
@@ -25,6 +29,7 @@
       </tr>
       <% }; %>
     </table>
+    <!-- Adding a new url -->
     <a href="/urls/new" class="btn btn-primary">New URL</a>
     <% } %>
   </div>

@@ -1,3 +1,5 @@
+<!-- Page that allows you to edit the long URL -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +8,7 @@
   <div class="container-fluid" style="text-align:center;">
     <%- include('partials/_header.ejs') %>
     <h1><small>shortURL: <%= shortURL%></small></h1>
+    <!-- Form that allows you to edit the long URL -->
     <form action="/urls/<%= shortURL%>" method="POST"> <!-- style="margin:150px; -->
       <input type="text" placeholder="<%= longURL %>" name="longURL" style="width: 300px">
       <input type="submit" value ="Update" class="btn btn-primary">
